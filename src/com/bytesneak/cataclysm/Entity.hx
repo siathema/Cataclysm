@@ -11,6 +11,7 @@ class Entity extends Sprite
 {
 	public var position:Vector2;
 	public var velocity:Vector2;
+	public var childEntity:Entity;
 	private var image:Bitmap;
 	private var camera:Camera;
 
@@ -26,6 +27,7 @@ class Entity extends Sprite
 		image.scaleY = 1;
 		image.x = -(image.width/2);
 		image.y = -(image.height / 2);
+		childEntity = null;
 		addChild(image);
 	}
 	
@@ -37,6 +39,11 @@ class Entity extends Sprite
 	
 	public function update()
 	{
+		if (childEntity != null)
+		{
+			childEntity.position.x = position.x;
+			childEntity.position.y = position.y - childEntity.image.height;
+		}
 		
 	}
 	

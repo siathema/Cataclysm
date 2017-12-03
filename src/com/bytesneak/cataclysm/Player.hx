@@ -16,6 +16,9 @@ class Player extends Entity
 	public var down:Bool;
 	public var left:Bool;
 	public var right:Bool;
+	public var pickUp:Bool;
+	public var canPickUp:Bool = true;
+	public var pickUpTimer = 0;
 	
 	private var speed:Float = 0;
 	private var maxSpeed:Float = 5;
@@ -33,8 +36,42 @@ class Player extends Entity
 		
 	}
 	
+	public function pickUpEntity(crates:Array<Crate>)
+	{
+		if (pickUp && canPickUp && pickUpTimer <= 0)
+		{
+			for (crate in crates)
+			{
+				if (crate.isInPickUpRadius(new Point(position.x, position.y)))
+				{
+					childEntity = crate;
+					canPickUp = false;
+					pickUpTimer = 15;
+					break;
+				}
+			}
+		}
+	}
+	
+	public function drop()
+	{
+		if (childEntity != null)
+		{
+			trace(pickUpTimer);
+			if (pickUp && (!canPickUp) && pickUpTimer <= 0)
+			{
+				childEntity = null;
+				canPickUp = true;
+				pickUpTimer = 15;
+			}
+		}
+	}
+	
 	public override function update()
 	{
+		super.update();
+		drop();
+		
 		if (up)
 		{
 			speed -= 0.2;
@@ -91,6 +128,11 @@ class Player extends Entity
 		
 		//image.rotation += 0.5;
 		position = position.add(velocity);
+		
+		if (pickUpTimer > 0)
+		{
+			pickUpTimer--;
+		}
 		
 	}
 	

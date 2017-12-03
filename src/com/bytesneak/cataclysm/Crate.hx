@@ -10,13 +10,13 @@ import openfl.geom.Point;
  */
 class Crate extends Entity 
 {
-	
+	public var pickUpRadius:Float;
 	
 	public function new(x:Float, y:Float, newImage:Bitmap, cam:Camera) 
 	{
 		super(x, y, newImage, cam);
 		
-		
+		pickUpRadius = 1.2 * image.width;
 		
 		
 	}
@@ -24,6 +24,18 @@ class Crate extends Entity
 	public override function update()
 	{
 		
+	}
+	
+	public function isInPickUpRadius(point:Point) : Bool
+	{
+		var xDelta = point.x - position.x;
+		var yDelta = point.y - position.y;
+		var distance:Float = Math.sqrt((xDelta * xDelta) + (yDelta * yDelta));
+		if (distance < pickUpRadius)
+		{
+			return true;
+		}
+		return false;
 	}
 	
 }

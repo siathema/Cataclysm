@@ -19,6 +19,8 @@ class Main extends Sprite
 	private var crates:Array<Crate>;
 	//private var crateTest:Crate;
 	private var keys:Array<Bool>;
+	private var time:Int = 0;
+	private var spaceTimer:Int = 0;
 
 	public function new() 
 	{
@@ -40,7 +42,7 @@ class Main extends Sprite
 		bitmapData = Assets.getBitmapData("img/BaseComponent.png");
 		crates = [];
 		
-		for (i in 0...1)
+		for (i in 0...10)
 		{
 			//var crate = new Bitmap(bitmapData);
 			var crate = new Crate(i * 128 + 50, 50, new Bitmap(bitmapData), camera);
@@ -81,13 +83,15 @@ class Main extends Sprite
 		droneTest.down = keys[Keyboard.S];
 		droneTest.left = keys[Keyboard.A];
 		droneTest.right = keys[Keyboard.D];
+		droneTest.pickUp = keys[Keyboard.SPACE];
 		
 		//camera.move(0.5, 0);
 		
 		//world.clearForces();
+		droneTest.pickUpEntity(crates);
+		//droneTest.drop();
 		droneTest.update();
 		droneTest.draw();
-		
 		
 		for (c in crates)
 		{
@@ -97,7 +101,15 @@ class Main extends Sprite
 		
 		//crateTest.draw();
 		
-		
+		time++;
+		if (spaceTimer > 0)
+		{
+			spaceTimer--;
+		}
+		if (time >= 60)
+		{
+			time = 0;
+		}
 	}
 
 }
